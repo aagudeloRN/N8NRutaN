@@ -1,0 +1,268 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tu Voz Importa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="podcast-background">
+      <div class="logo-container">
+        <img src="logo_blanco.png" alt="Logo" class="logo">
+      </div>
+      <form id="pitchForm" class="form">
+        <div class="form-header">
+          <h2>Tu Voz Importa</h2>
+          <p class="subtitle">Estamos escuchando tu historia. Cada mensaje es una oportunidad para conectar.</p>
+        </div>
+        <div class="form-group">
+          <label for="email">Correo Electrónico:</label>
+          <input type="email" id="email" name="email" placeholder="tu@correo.com" required>
+          <span class="error-message" id="emailError"></span>
+        </div>
+        <div class="form-group">
+          <label for="empresa">Nombre de la Empresa:</label>
+          <input type="text" id="empresa" name="empresa" placeholder="Nombre de la empresa" required>
+          <span class="error-message" id="empresaError"></span>
+        </div>
+        <div class="form-group recording-section">
+          <label>Tu Mensaje (máx. 2 minutos):</label>
+          <div class="audio-controls">
+            <button type="button" id="startRecording" class="recording-btn">
+              <span class="btn-icon">🎙️</span> Iniciar Grabación
+            </button>
+            <button type="button" id="stopRecording" disabled class="recording-btn">
+              <span class="btn-icon">⏹️</span> Detener Grabación
+            </button>
+          </div>
+          <audio id="audioPreview" controls style="display: none;"></audio>
+          <div id="timerDisplay" class="timer">00:00</div>
+          <span class="error-message" id="audioError"></span>
+        </div>
+        <button type="submit" id="submitBtn">Enviar Mensaje</button>
+        <div id="submitStatus" class="status-message"></div>
+      </form>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+
+/* styles.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --color-dark: #253d36;
+  --color-lime: #c0d400;
+  --color-teal: #00b8a3;
+  --color-blue: #0068ff;
+  --color-yellow: #ffca00;
+  --color-orange: #ff4c17;
+}
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  background-color: var(--color-dark);
+  line-height: 1.6;
+  color: white;
+}
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 20px;
+}
+.podcast-background {
+  background: linear-gradient(135deg, rgba(37, 61, 54, 0.95) 0%, rgba(0, 184, 163, 0.85) 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.podcast-background::before {
+  content: '🎙️';
+  position: absolute;
+  font-size: 20rem;
+  opacity: 0.05;
+  right: -5rem;
+  top: -5rem;
+  transform: rotate(-15deg);
+}
+.logo-container {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.logo {
+  max-width: 200px;
+  height: auto;
+}
+.form {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+.form-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+h2 {
+  color: var(--color-lime);
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+.subtitle {
+  font-size: 1.1rem;
+}
+.form-group {
+  margin-bottom: 1.5rem;
+}
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: white;
+  font-weight: 600;
+}
+input[type="email"],
+input[type="text"] {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+input:focus {
+  outline: none;
+  border-color: var(--color-yellow);
+  box-shadow: 0 0 0 3px rgba(255, 202, 0, 0.2);
+}
+.recording-section {
+  background: rgba(0, 104, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 104, 255, 0.2);
+}
+.audio-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.recording-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+.btn-icon {
+  font-size: 1.2rem;
+}
+#startRecording { background-color: var(--color-teal); color: white; }
+#stopRecording  { background-color: var(--color-orange); color: white; }
+#submitBtn     {
+  background-color: var(--color-lime); color: var(--color-dark);
+  width: 100%; margin-top: 1.5rem; padding: 1rem;
+  border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; font-weight: 600;
+}
+button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+button:disabled { background-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); cursor: not-allowed; transform: none; box-shadow: none; }
+.error-message { font-size: 0.875rem; margin-top: 0.25rem; display: block; }
+.status-message { margin-top: 1rem; padding: 1rem; border-radius: 8px; text-align: center; font-weight: 600; }
+.status-message.success { background-color: rgba(192,212,0,0.2); color: var(--color-lime); }
+.status-message.error   { background-color: rgba(255,76,23,0.2); color: var(--color-orange); }
+.timer { text-align: center; font-size: 1.5rem; margin-top: 1rem; color: var(--color-yellow); font-weight: 600; }
+/* script.js */
+let mediaRecorder;
+let audioChunks = [];
+let timerInterval;
+let secondsElapsed = 0;
+const startBtn = document.getElementById('startRecording');
+const stopBtn  = document.getElementById('stopRecording');
+const audioEl  = document.getElementById('audioPreview');
+const timerEl  = document.getElementById('timerDisplay');
+const form     = document.getElementById('pitchForm');
+const statusEl = document.getElementById('submitStatus');
+
+function updateTimer() {
+  secondsElapsed++;
+  const m = String(Math.floor(secondsElapsed/60)).padStart(2,'0');
+  const s = String(secondsElapsed%60).padStart(2,'0');
+  timerEl.textContent = `${m}:${s}`;
+  if (secondsElapsed >= 120) stopRecording();
+}
+
+async function startRecording() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+    mediaRecorder.start();
+    startBtn.disabled = true;
+    stopBtn.disabled  = false;
+    audioEl.style.display = 'none';
+    secondsElapsed = 0;
+    timerEl.textContent = '00:00';
+    timerInterval = setInterval(updateTimer, 1000);
+
+    mediaRecorder.addEventListener('dataavailable', e => {
+      if (e.data.size > 0) audioChunks.push(e.data);
+    });
+    mediaRecorder.addEventListener('stop', () => {
+      clearInterval(timerInterval);
+      const blob = new Blob(audioChunks, { type: 'audio/webm' });
+      audioEl.src = URL.createObjectURL(blob);
+      audioEl.style.display = 'block';
+    });
+  } catch(err) {
+    alert('No se pudo acceder al micrófono. Verifica permisos.');
+  }
+}
+
+function stopRecording() {
+  if(mediaRecorder && mediaRecorder.state !== 'inactive') {
+    mediaRecorder.stop();
+    startBtn.disabled = false;
+    stopBtn.disabled  = true;
+  }
+}
+
+startBtn.addEventListener('click', startRecording);
+stopBtn .addEventListener('click', stopRecording);
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  statusEl.textContent = '';
+  if(audioChunks.length === 0) {
+    document.getElementById('audioError').textContent = 'Por favor, graba tu mensaje.';
+    return;
+  }
+  const formData = new FormData(form);
+  formData.append('audio', new Blob(audioChunks, { type: 'audio/webm' }), 'pitch.webm');
+  const url = 'https://aagudelo.app.n8n.cloud/webhook-test/formulario';
+  try {
+    const res = await fetch(url, { method:'POST', body: formData });
+    if(res.ok) {
+      statusEl.className = 'status-message success';
+      statusEl.textContent = '¡Mensaje enviado con éxito!';
+      form.reset(); audioEl.src = ''; audioEl.style.display = 'none';
+    } else throw new Error();
+  } catch {
+    statusEl.className = 'status-message error';
+    statusEl.textContent = 'Error al enviar. Intenta de nuevo.';
+  }
+});

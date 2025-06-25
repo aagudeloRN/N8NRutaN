@@ -62,7 +62,7 @@ form.addEventListener('submit', async e => {
   const formData = new FormData(form);
   formData.append('audio', new Blob(audioChunks, { type: 'audio/webm' }), 'pitch.webm');
   try {
-    const res = await fetch('https://127.0.0.1.nip.io/webhook/formulario', { method:'POST', body: formData });
+    const res = await fetch('https://127.0.0.1.nip.io/webhook-test/formulario', { method:'POST', body: formData });
     if(res.ok) {
       statusEl.className = 'status-message success';
       statusEl.textContent = '¡Mensaje enviado con éxito!';
